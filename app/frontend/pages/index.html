@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>AIreading</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('styles', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="#page-top">
+        <img src="img/navbar-logo.png"/>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars ms-1"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0 fw-bold">
+          <li class="nav-item">
+            <a class="nav-link" href="#services">
+              Services
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#vocabulary">
+              Vocabulary
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#brevity">
+              Brevity
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#similarity">
+              Similarity
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Masthead-->
+  <header class="masthead">
+    <div class="container">
+      <div class="masthead-subheading">
+        Welcome to Simple reading with AI!
+      </div>
+      <div class="masthead-heading text-uppercase">
+        Learn fast
+      </div>
+      <a class="btn btn-primary btn-xl text-uppercase" href="#services">
+        Lets start
+      </a>
+    </div>
+  </header>
+  <!-- Services-->
+  <section class="page-section" id="services">
+    <div class="container">
+      <div class="text-center">
+          <h2 class="section-heading text-uppercase">
+            Services
+          </h2>
+          <h3 class="section-subheading text-muted"></h3>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <span class="fa-stack fa-4x">
+            <img class="img-fluid" src="img/services/vocabulary.png"/>
+          </span>
+          <h4 class="my-3">
+            Vocabulary
+          </h4>
+          <p class="text-muted">
+            Create Vocabulary list with challenging but commonly used words from pdf file
+          </p>
+        </div>
+        <div class="col-md-4">
+          <span class="fa-stack fa-4x">
+            <img class="img-fluid" src="img/services/brevity.png"/>
+          </span>
+          <h4 class="my-3">
+            Brevity
+          </h4>
+          <p class="text-muted">
+            Give a short version of what the text is about, summarizing the main points.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <span class="fa-stack fa-4x">
+            <img class="img-fluid" src="img/services/similarity.png"/>
+          </span>
+          <h4 class="my-3">
+            Similarity
+          </h4>
+          <p class="text-muted">
+            Find similar books and explore related texts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Vocabulary Grid-->
+  <section class="page-section bg-light" id="vocabulary">
+    <div class="container">
+      <div class="text-center">
+          <h2 class="section-heading text-uppercase">
+            Vocabulary
+          </h2>
+          <h3 class="section-subheading text-muted">
+            Create list with commonly used words.
+          </h3>
+      </div>
+      <div class="row">
+        <div class="col-2 mb-4">
+        </div>
+        <div class="col mb-4">
+          <div class="mb-3 row">
+            <label for="vocabulary_words" class="col-sm-5 col-form-label">
+              How many words do you need?
+            </label>
+            <div class="col-sm-7">
+              <input 
+                type="text" 
+                class="form-control" 
+                value="10" 
+                id="vocabulary_words">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="vocabulary_columns" class="col-sm-5 col-form-label">
+              Which columns do you need?
+            </label>
+            <div class="col-sm-7">
+              <input 
+                type="text" 
+                class="form-control" 
+                value="IPA, chinese translation, english translation, example"
+                id="vocabulary_columns">
+            </div>
+          </div>
+          <div class="d-flex justify-content-evenly">
+            <label 
+              for="vocabulary_files" 
+              class="btn btn-primary btn-xl" 
+              id="vocabulary_button">
+              Select PDF File
+            </label>
+          </div>
+          <div>
+            <input 
+              id="vocabulary_files" 
+              style="visibility:hidden;" 
+              type="file" 
+              onchange="createVocabulary(this)" 
+              data-url="{{ url_for('create_vocabulary') }}">
+          </div>
+        </div>
+        <div class="col-2 mb-4">
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Brevity Grid-->
+  <section class="page-section" id="brevity">
+    <div class="container">
+      <div class="text-center">
+          <h2 class="section-heading text-uppercase">
+            Brevity
+          </h2>
+          <h3 class="section-subheading text-muted">
+            Give a short description and main idea of the text.
+          </h3>
+      </div>
+      <div class="row">
+        <div class="col-lg col-sm-6 mb-4">
+          <div class="d-flex justify-content-evenly">
+            <label 
+              for="brevity_files" 
+              class="btn btn-primary btn-xl" 
+              id="brevity_button">
+              Select PDF File
+            </label>
+          </div>
+          <div>
+            <input 
+              id="brevity_files" 
+              style="visibility:hidden;" 
+              type="file" 
+              onchange="createBrevity(this)" 
+              data-url="{{ url_for('create_brevity') }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Similarity Grid-->
+  <section class="page-section bg-light" id="similarity">
+    <div class="container">
+      <div class="text-center">
+          <h2 class="section-heading text-uppercase">
+            Similarity
+          </h2>
+          <h3 class="section-subheading text-muted">
+            Looking for a similar texts with the same idea.
+          </h3>
+      </div>
+      <div class="row">
+        <div class="col-lg col-sm-6 mb-4">
+          <div class="d-flex justify-content-evenly">
+            <label 
+              for="similarity_files" 
+              class="btn btn-primary btn-xl" 
+              id="similarity_button">
+              Select PDF File
+            </label>
+          </div>
+          <div>
+            <input 
+              id="similarity_files" 
+              style="visibility:hidden;" 
+              type="file" 
+              onchange="createSimilarity(this)" 
+              data-url="{{ url_for('create_similarity') }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Skills-->
+  <div class="py-3 bg-dark" id="skills">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-4 my-3">
+          <a href="https://docs.python.org">
+            <img class="img-fluid img-brand d-block mx-auto" src="img/skills/1.png"/>
+          </a>
+        </div>
+        <div class="col-md-4 my-3">
+          <a href="https://openai.com/">
+            <img class="img-fluid img-brand d-block mx-auto" src="img/skills/2.png"/>
+          </a>
+        </div>
+        <div class="col-md-4 my-3">
+          <a href="https://openai.com/">
+            <img class="img-fluid img-brand d-block mx-auto" src="img/skills/3.png" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer-->
+  <footer class="footer pb-3 bg-dark text-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-4 text-lg-start">Copyright &copy; Zakhar Bengart 2023
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Modal-->
+  <div class="modal" tabindex="-1" id="modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('js', path='/scripts.js') }}"></script>
+</body>
+</html>
