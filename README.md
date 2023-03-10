@@ -36,11 +36,24 @@ Online [demo site](https://github.com/zakharb/aireading) where you can try it!
 
 Clone the project
 
-```
+```sh
 git clone git@github.com:zakharb/aireading.git
 cd aireading
 ```
 
+Create API key on [OpenAI site](https://platform.openai.com/account/api-keys)
+
+Write created API key to `OPENAI_API_KEY` variable into `docker-compose.yml` file  
+```
+services:
+  aireading:
+    build: ./aireading
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --forwarded-allow-ips=* --proxy-headers
+    volumes:
+      - ./aireading/:/app/
+    environment:
+      - OPENAI_API_KEY=sk-asjhdAWEhw781h2ih2UIHADG@G3792q1u23hiUWHAUWEhiq  
+```
 Start docker-compose
 
 ```
@@ -53,17 +66,30 @@ http://localhost:8080
 
 ## :red_square: Deployment to Deta
 
-Edit Dockerfile and spicify server IP address
+Deployment is described in this [gudie](https://deta.space/docs/en/basics/cli)
 
-Build image
+Install Deta Space CLI
+```sh
+curl -fsSL https://get.deta.dev/space-cli.sh | sh
 ```
-docker build --network host -t syslogen .
+Generate an access token on [Space dashboard](https://deta.space/)
+
+Login to Deta Space
+```sh
+space login
 ```
 
-Run image
+Go to folder and create project
+```sh
+cd aireading
+space new
 ```
-docker run syslogen
+
+Push the project
+```sh
+space push
 ```
+
 ## :red_square: Versioning
 
 Using [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/zakharb/syslogen/tags). 
