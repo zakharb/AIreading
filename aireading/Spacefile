@@ -5,8 +5,3 @@ micros:
     src: .
     engine: python3.9
     primary: true
-    presets:
-      env:
-        - name: OPENAI_API_KEY
-          description: Secret API for OpenAI
-          default: "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"
