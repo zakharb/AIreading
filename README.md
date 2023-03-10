@@ -24,7 +24,7 @@
 
 [AIreading](https://github.com/zakharb/aireading) is the simple tool to work with text using OpenAI like ChatGPT. It helps to find vocabulary in the text, generate short description and main idea for text and suggest to you similar stories.  
 
-Online [demo site](https://github.com/zakharb/aireading) where you can try it!
+Online [Demo site](https://aireding-1-x9379886.deta.app/) where you can try it!
 
 ### Requirements
 
