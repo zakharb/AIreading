@@ -20,13 +20,14 @@ def read_pdf(file=None):
         data.append(page.extract_text())
     return data
 
-def send_data_to_chatgpt(text=""):
+async def send_data_to_chatgpt(text=""):
     """
     send text to chatGPT
     :param text: text to send to API
     :return: completition from API
     """
-    completion = openai.ChatCompletion.create(
+
+    completion = await openai.ChatCompletion.acreate(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -35,8 +36,14 @@ def send_data_to_chatgpt(text=""):
             },
         ],
         temperature=0,
+        stream=True,
     )
-    return completion.choices[0].message.content
+    data = ""
+    async for resp in completion:
+        delta = resp.choices[0].delta
+        text = delta.get('content', '')
+        data += text
+    return data
 
 def create_table(data):
     """

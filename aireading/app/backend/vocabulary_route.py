@@ -39,10 +39,8 @@ async def create_vocabulary(file: bytes = File(),
     pages = read_pdf(BytesIO(file))
     content = create_vocabulary_content(pages=pages, 
                                         words=words, columns=columns)
-    resp = send_data_to_chatgpt(content)
-    print(resp)
+    resp = await send_data_to_chatgpt(content)
     table = create_table(resp.splitlines())
-    print(table)
     table = add_pages_number(table, pages)
     book = create_book(table)
     return StreamingResponse(book)    
