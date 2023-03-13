@@ -88,7 +88,6 @@ async def get_data_from_chatgpt(chunks, columns, chunk_words):
     for chunk in chunks:
         content = create_content(chunk, columns, chunk_words)
         task = send_data_to_chatgpt(content)
-        print('[*] create task: ', task)
         tasks.append(create_task_with_timeout(task))
     return await asyncio.gather(*tasks)
 
@@ -109,7 +108,7 @@ async def create_task_with_timeout(task):
         asyncio.TimeoutError: If the task does not complete within the specified timeout.
     """
     try:
-        result = await asyncio.wait_for(task, timeout=16)
+        result = await asyncio.wait_for(task, timeout=45)
     except asyncio.TimeoutError:
         print("Timeout occurred while waiting for task to complete.")
         result = ""
@@ -137,7 +136,6 @@ async def send_data_to_chatgpt(text=""):
         delta = resp.choices[0].delta
         text = delta.get('content', '')
         data += text
-    print('[+] Get response:', data)
     return data
 
 def filter_response(response: list) -> list:
