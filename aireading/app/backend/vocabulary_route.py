@@ -30,6 +30,8 @@ from app.backend.lib import get_data_from_chatgpt, send_data_to_chatgpt
 from app.backend.lib import create_table, create_book, add_pages_number
 from app.backend.lib import create_text, filter_response
 from app.backend.lib import parse_columns
+from app.backend.lib import create_task_with_timeout
+import asyncio
 
 
 router = APIRouter()
@@ -54,6 +56,7 @@ async def create_vocabulary(file: bytes = File(),
     pages = read_pdf(BytesIO(file))
     text = create_text(pages)
     chunks, chunk_words = split_chunks(text, words)
+    tasks = []
     for chunk in chunks:
         content = create_content(chunk, columns, chunk_words)
         task = send_data_to_chatgpt(content)
