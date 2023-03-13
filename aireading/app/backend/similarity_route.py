@@ -24,7 +24,10 @@
 from io import BytesIO
 from fastapi import APIRouter
 from fastapi import File
-from app.backend.lib import read_pdf, send_data_to_chatgpt
+from app.backend.lib import read_pdf, split_chunks
+from app.backend.lib import send_data_to_chatgpt
+from app.backend.lib import create_text, create_task_with_timeout
+import asyncio
 
 router = APIRouter()
 
@@ -32,12 +35,28 @@ router = APIRouter()
             response_description="Show similar texts")
 async def create_similarity(file: bytes = File()): 
     pages = read_pdf(BytesIO(file))
-    content = create_similarity_content(pages=pages)
-    resp = send_data_to_chatgpt(content)
-    return resp
+    text = create_text(pages)
+    chunks, chunk_words = split_chunks(text, 1)
+    tasks = []
+    for chunk in chunks[:5]:
+        content = create_content(chunk)
+        task = send_data_to_chatgpt(content)
+        tasks.append(create_task_with_timeout(task))
+    raw_data = await asyncio.gather(*tasks)
+    return raw_data
 
-def create_similarity_content(pages):
-    text = "wrile list of 5 similar texts to this text:"
-    for page in pages:
-        text += page
-    return text
+def create_content(text):
+    """
+    Create a string containing a message and a table header based on given columns.
+
+    Args:
+        text (str): The text to be included in the message.
+        columns (list): A list of column names.
+        chunk_words (str): The word that was chunked from the text.
+
+    Returns:
+        str: The message with the formatted table header.
+    """
+    content = f'Wrile one similar book with autor for this text:'
+    content += text
+    return content
