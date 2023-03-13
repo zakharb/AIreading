@@ -7,7 +7,7 @@ services:
     volumes:
       - ./aireading/:/app/
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=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
   
   nginx:
     image: nginx:latest
