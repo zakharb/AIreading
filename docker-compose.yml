@@ -6,9 +6,9 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --forwarded-allow-ips=* --proxy-headers
     volumes:
       - ./aireading/:/app/
-    environment:
-      - OPENAI_API_KEY=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
-  
+    env_file:
+      - .env
+
   nginx:
     image: nginx:latest
     ports:

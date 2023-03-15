@@ -108,7 +108,7 @@ async def create_task_with_timeout(task):
         asyncio.TimeoutError: If the task does not complete within the specified timeout.
     """
     try:
-        result = await asyncio.wait_for(task, timeout=45)
+        result = await asyncio.wait_for(task, timeout=18)
     except asyncio.TimeoutError:
         print("Timeout occurred while waiting for task to complete.")
         result = ""
