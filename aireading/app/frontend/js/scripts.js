@@ -57,7 +57,6 @@ window.addEventListener('DOMContentLoaded', event => {
 function createVocabulary(e) {
     e.disabled = true;
     let words = document.querySelector('#vocabulary_words').value
-    let columns = document.querySelector('#vocabulary_columns').value
     let vocabulary_button = document.querySelector('#vocabulary_button')
     let button_html = vocabulary_button.innerHTML;
     let file = e.files[0];
@@ -71,7 +70,6 @@ function createVocabulary(e) {
         </span>
         Loading...`; 
     formData.append("words", words);
-    formData.append("columns", columns);
     fetch(e.dataset.url, {
         method: "POST",
         body: formData,

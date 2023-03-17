@@ -21,7 +21,7 @@ def parse_columns(columns_raw: str) -> list:
         list: A list of column names.
     """
     columns = ["word",]
-    columns_raw = columns_raw.split(',')
+    columns_raw = columns_raw.split(', ')
     columns.extend(columns_raw)
     return columns
 
@@ -108,7 +108,7 @@ async def create_task_with_timeout(task):
         asyncio.TimeoutError: If the task does not complete within the specified timeout.
     """
     try:
-        result = await asyncio.wait_for(task, timeout=18)
+        result = await asyncio.wait_for(task, timeout=60)
     except asyncio.TimeoutError:
         print("Timeout occurred while waiting for task to complete.")
         result = ""
@@ -212,10 +212,16 @@ def add_pages_number(table, pages):
     table[0].append('Pages number')
     table_with_pages.append(table[0])
     for row in table[1:]:
+        if len(row) < 4:
+            continue
+        cell = row[4]
+        # get example cell: "There are five children in this book"
+        cell = cell[1:20]
+        # split example cell: There are five chil
         row_with_pages = row
         pages_number = []
         for page in pages:
-            if row[0].lower() in page.lower():
+            if cell[:15].lower() in page.lower():
                 pages_number.append(str(pages.index(page) + 1))
                 break
         row_with_pages.append(','.join(pages_number))
