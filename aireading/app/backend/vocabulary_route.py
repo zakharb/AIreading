@@ -32,15 +32,14 @@ from app.backend.lib import create_text, filter_response
 from app.backend.lib import parse_columns
 from app.backend.lib import create_task_with_timeout
 import asyncio
-
+import json
 
 router = APIRouter()
 
 @router.post("/create_vocabulary",
             response_description="Parse vocabulary")
 async def create_vocabulary(file: bytes = File(), 
-                            words: int = Form(),
-                            columns: str = Form()):
+                            words: int = Form()):
     """
     Parse a PDF file, send each chunk of text to the ChatGPT API, and create a vocabulary book.
 
@@ -52,6 +51,7 @@ async def create_vocabulary(file: bytes = File(),
     Returns:
         StreamingResponse: A streaming response object containing the resulting vocabulary book.
     """
+    columns = 'IPA, chinese meaning, english meaning, example from the excerpt'
     columns = parse_columns(columns)
     pages = read_pdf(BytesIO(file))
     text = create_text(pages)
@@ -80,8 +80,11 @@ def create_content(text, columns, chunk_words):
     Returns:
         str: The message with the formatted table header.
     """
-    columns_table = ','.join([ f'"{x}"' for x in columns ])
-    columns = ','.join(columns[1:])
-    content = f'Please provide me with the {columns} for {chunk_words} vocabulary word found in the following text, formatted in a table with separator "|" and with the columns {columns_table}'
+    columns_table = ', '.join([ f'"{x}"' for x in columns ])
+    columns = ', '.join(columns[1:])
+    #content = f'Please provide me with the {columns} for {chunk_words} vocabulary word found in the following text, formatted in a table with separator "|" and with the columns {columns_table}'
+    content = f'Please provide me with the {columns} for {chunk_words} '\
+              f'vocabulary word found in the following text, formatted in a table '\
+              f'with separator "|" and with the columns {columns_table}'
     content += text
     return content
