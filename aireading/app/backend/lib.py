@@ -72,26 +72,7 @@ def split_chunks(text: str, words: int) -> tuple:
     chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
     return chunks, num_chunks
 
-async def get_data_from_chatgpt(chunks, columns, chunk_words):
-    """
-    Asynchronously send data to the ChatGPT API for each chunk of text and gather the responses.
-
-    Args:
-        chunks (List[str]): A list of text chunks to send to the ChatGPT API.
-        columns (List[str]): A list of column names for the expected response.
-        chunk_words (str): A string describing the vocabulary word for each chunk.
-
-    Returns:
-        List[str]: A list of responses from the ChatGPT API.
-    """
-    tasks = []
-    for chunk in chunks:
-        content = create_content(chunk, columns, chunk_words)
-        task = send_data_to_chatgpt(content)
-        tasks.append(create_task_with_timeout(task))
-    return await asyncio.gather(*tasks)
-
-async def create_task_with_timeout(task):
+async def create_task_with_timeout(task, timeout=120):
     """
     Run an asyncio task with a timeout.
 
@@ -108,9 +89,10 @@ async def create_task_with_timeout(task):
         asyncio.TimeoutError: If the task does not complete within the specified timeout.
     """
     try:
-        result = await asyncio.wait_for(task, timeout=60)
+        result = await asyncio.wait_for(task, timeout=timeout)
     except asyncio.TimeoutError:
-        print("Timeout occurred while waiting for task to complete.")
+        result = ""
+    except Exception as e:
         result = ""
     return result
 

@@ -43,6 +43,7 @@ async def create_brevity(file: bytes = File()):
         task = send_data_to_chatgpt(content)
         tasks.append(create_task_with_timeout(task))
     raw_data = await asyncio.gather(*tasks)
+    data = '<br>'.join(raw_data)
     return raw_data
 
 def create_content(text):

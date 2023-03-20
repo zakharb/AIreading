@@ -26,7 +26,7 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from fastapi import File, Form
 from app.backend.lib import read_pdf, split_chunks
-from app.backend.lib import get_data_from_chatgpt, send_data_to_chatgpt
+from app.backend.lib import send_data_to_chatgpt
 from app.backend.lib import create_table, create_book, add_pages_number
 from app.backend.lib import create_text, filter_response
 from app.backend.lib import parse_columns
@@ -60,7 +60,9 @@ async def create_vocabulary(file: bytes = File(),
     for chunk in chunks:
         content = create_content(chunk, columns, chunk_words)
         task = send_data_to_chatgpt(content)
-        tasks.append(create_task_with_timeout(task))
+        timeout = chunk_words * 10
+        print(timeout)
+        tasks.append(create_task_with_timeout(task, timeout=timeout))
     raw_data = await asyncio.gather(*tasks)
     data = filter_response(raw_data)
     table = create_table(data, columns, words)

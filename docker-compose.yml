@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 
 services:
   aireading:
@@ -17,5 +17,5 @@ services:
       - ./nginx_config.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - aireading
-    # logging:
-    #   driver: none
+    logging:
+      driver: none
