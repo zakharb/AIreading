@@ -201,12 +201,12 @@ def add_pages_number(table, pages):
         cell = cell[1:20]
         # split example cell: There are five chil
         row_with_pages = row
-        pages_number = []
         for page in pages:
             if cell[:15].lower() in page.lower():
-                pages_number.append(str(pages.index(page) + 1))
+                pages_number = str(pages.index(page) + 1)
                 break
-        row_with_pages.append(','.join(pages_number))
+        if pages_number:
+            row_with_pages.append(pages_number)
         table_with_pages.append(row_with_pages)
     return table_with_pages
 
