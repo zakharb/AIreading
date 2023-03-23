@@ -61,7 +61,6 @@ async def create_vocabulary(file: bytes = File(),
         content = create_content(chunk, columns, chunk_words)
         task = send_data_to_chatgpt(content)
         timeout = chunk_words * 10
-        print(timeout)
         tasks.append(create_task_with_timeout(task, timeout=timeout))
     raw_data = await asyncio.gather(*tasks)
     data = filter_response(raw_data)
