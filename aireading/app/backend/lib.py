@@ -38,7 +38,7 @@ def read_pdf(file) -> list:
     reader = PyPDF2.PdfReader(file)
     data = []
     for page in reader.pages:
-        data.append(page.extract_text().replace('\n', ''))
+        data.append(page.extract_text().replace('\n', '').replace('  ', ''))
     return data
 
 def create_text(pages: list) -> str:
@@ -193,6 +193,7 @@ def add_pages_number(table, pages):
     table_with_pages = []
     table[0].append('Pages number')
     table_with_pages.append(table[0])
+    pages_number = "1"
     for row in table[1:]:
         if len(row) < 4:
             continue
@@ -201,12 +202,11 @@ def add_pages_number(table, pages):
         cell = cell[1:20]
         # split example cell: There are five chil
         row_with_pages = row
-        pages_number = []
         for page in pages:
             if cell[:15].lower() in page.lower():
-                pages_number.append(str(pages.index(page) + 1))
+                pages_number = str(pages.index(page) + 1)
                 break
-        row_with_pages.append(','.join(pages_number))
+        row_with_pages.append(pages_number)
         table_with_pages.append(row_with_pages)
     return table_with_pages
 
