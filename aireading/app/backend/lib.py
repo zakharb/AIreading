@@ -38,7 +38,7 @@ def read_pdf(file) -> list:
     reader = PyPDF2.PdfReader(file)
     data = []
     for page in reader.pages:
-        data.append(page.extract_text())
+        data.append(page.extract_text().replace('\n', ''))
     return data
 
 def create_text(pages: list) -> str:
